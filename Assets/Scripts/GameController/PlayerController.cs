@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
             animIdleTimer = 0;
             anim.SetFloat(Const.Player.animSpeed, speed);
             //rigidBody.MovePosition(gameObject.transform.position + new Vector3(1, 0, 0) * speed * Time.deltaTime);
-            rigidBody.AddForce(new Vector2(1, 0) * speed);
+            rigidBody.velocity = new Vector2(1, 0) * speed;
 
             if (Input.GetButtonDown("Action") && CanJump())
             {

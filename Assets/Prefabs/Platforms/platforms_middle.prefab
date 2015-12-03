@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &134638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 412972}
+  - 68: {fileID: 6832778}
+  m_Layer: 0
+  m_Name: collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &180630
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,7 +25,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 484556}
   - 212: {fileID: 21295690}
-  - 61: {fileID: 6119644}
   m_Layer: 0
   m_Name: platforms_middle
   m_TagString: Untagged
@@ -17,6 +32,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &412972
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134638}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: .639999986, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 484556}
+  m_RootOrder: 0
 --- !u!4 &484556
 Transform:
   m_ObjectHideFlags: 1
@@ -26,22 +53,24 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.75999999, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 412972}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!61 &6119644
-BoxCollider2D:
+--- !u!68 &6832778
+EdgeCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 180630}
+  m_GameObject: {fileID: 134638}
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: -.419032693}
-  serializedVersion: 2
-  m_Size: {x: .639999986, y: .825934529}
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+  - {x: -.5, y: 0}
+  - {x: .5, y: 0}
 --- !u!212 &21295690
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -83,6 +112,10 @@ Prefab:
       propertyPath: m_SortingLayerID
       value: 1727168287
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: cdc05bc5c693a5d45956ece0a38fb136, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 180630}
