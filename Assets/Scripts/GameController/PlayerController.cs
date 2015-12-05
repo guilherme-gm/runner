@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == Const.Tags.Platform)
+        if (coll.gameObject.tag.StartsWith(Const.Tags.Platform))
             this.jumpState = JumpState.Grounded;
     }
 }
