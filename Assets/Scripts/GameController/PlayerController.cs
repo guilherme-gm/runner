@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     /// <summary>Hash de Sleep para o animator</summary>
     private int animSleepHash = Animator.StringToHash("Root.Sleep");
+    /// <summary>Hash de Jump para o animator</summary>
+    private int animJumpHash = Animator.StringToHash("Root.Jump");
     /// <summary>Tempo de Idle antes de começar (em segs)</summary>
     private float animIdleTimer = 1f;
     #endregion
@@ -57,7 +59,10 @@ public class PlayerController : MonoBehaviour
         else
         {
             if (Input.GetButtonDown("Action") && this.jumpState == JumpState.Grounded)
+            {
+                this.anim.SetTrigger(Const.Player.animJump);
                 this.jumpState = JumpState.Prepare;
+            }
         }
     }
 
@@ -70,11 +75,7 @@ public class PlayerController : MonoBehaviour
             this.animIdleTimer = -1;
         }
 
-        if (this.jumpState == JumpState.Prepare)
-        {
-            this.rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            this.jumpState = JumpState.Jumping;
-        }
+        
     }
 
     private bool IsSleeping()
@@ -85,7 +86,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag.StartsWith(Const.Tags.Platform))
+        if (coll.gameObject.tag.StartsWith(Const.Tags.Platform) && this.jumpState == JumpState.Jumping)
             this.jumpState = JumpState.Grounded;
+    }
+
+    private void DoJump()
+    {
+        if (this.jumpState == JumpState.Prepare)
+        {
+            this.rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            this.jumpState = JumpState.Jumping;
+        }
     }
 }

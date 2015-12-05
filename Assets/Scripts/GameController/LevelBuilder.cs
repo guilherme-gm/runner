@@ -19,7 +19,7 @@ public class LevelBuilder : MonoBehaviour {
     public GameObject middlePlatformObject;
     public GameObject endPlatformObject;
 
-    public float cameraRange = 6f;
+    public float cameraRange = 10f;
 
     void Start () {
         startPlatforms = new ObjectPool(startPlatformObject, 5);
@@ -27,7 +27,7 @@ public class LevelBuilder : MonoBehaviour {
         endPlatforms = new ObjectPool(endPlatformObject, 5);
 
         spawnedPlatforms = new List<GameObject>();
-
+        
         player = GameObject.FindGameObjectWithTag(Const.Tags.Player).transform;
 
         tileWidth = startPlatformObject.GetComponent<SpriteRenderer>().GetComponent<Renderer>().bounds.size.x;
@@ -43,7 +43,7 @@ public class LevelBuilder : MonoBehaviour {
 
     // Update is called once per frame
 	void Update () {
-        if (player.transform.position.x + cameraRange > lastTile)
+        if (player.position.x + cameraRange > lastTile)
         {
             Generate();
         }
@@ -64,7 +64,7 @@ public class LevelBuilder : MonoBehaviour {
 
     private void Generate()
     {
-        int height = 1;// Random.Range(0, lastHeight + 1);
+        int height = Random.Range(0, lastHeight + 1);
         int width = Random.Range(0, 5);
         
         AddPlatform(startPlatforms.Get(), height);
