@@ -3,6 +3,16 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    /// <summary>
+    /// Estados de pulo
+    /// </summary>
+    private enum JumpState
+    {
+        Grounded,
+        Prepare,
+        Jumping
+    }
+
     #region Animation Var
     /// <summary>Player animator</summary>
     private Animator anim;
@@ -13,44 +23,57 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Player Object Data
-    /// <summary>Velocidade de Movimento</summary>
+    /// <summary>Força do Movimento</summary>
     public float speed = 1f;
+    /// <summary>Força do pulo</summary>
     public float jumpForce = 1f;
 
     private Rigidbody2D rigidBody;
+    private JumpState jumpState = JumpState.Grounded;
     #endregion
 
     private void Start()
     {
-        anim = gameObject.GetComponent<Animator>();
-        rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        this.anim = gameObject.GetComponent<Animator>();
+        this.rigidBody = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (IsSleeping())
         {
             if (Input.GetButtonDown("Action"))
             {
-                anim.SetBool(Const.Player.animIsSleeping, false);
-                anim.SetFloat(Const.Player.animSpeed, 0f);
+                this.anim.SetBool(Const.Player.animIsSleeping, false);
+                this.anim.SetFloat(Const.Player.animSpeed, 0f);
             }
         }
         else if (animIdleTimer > 0)
         {
-            animIdleTimer -= Time.fixedDeltaTime;
+            this.animIdleTimer -= Time.deltaTime;
+            if (this.animIdleTimer <= 0)
+                this.animIdleTimer = 0;
         }
         else
         {
-            animIdleTimer = 0;
-            anim.SetFloat(Const.Player.animSpeed, speed);
-            //rigidBody.MovePosition(gameObject.transform.position + new Vector3(1, 0, 0) * speed * Time.deltaTime);
-            rigidBody.velocity = new Vector2(1, 0) * speed;
+            if (Input.GetButtonDown("Action") && this.jumpState == JumpState.Grounded)
+                this.jumpState = JumpState.Prepare;
+        }
+    }
 
-            if (Input.GetButtonDown("Action") && CanJump())
-            {
-                rigidBody.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
-            }
+    private void FixedUpdate()
+    {
+        if (this.animIdleTimer == 0)
+        {
+            this.anim.SetFloat(Const.Player.animSpeed, speed);
+            this.rigidBody.AddForce(Vector2.right * speed);
+            this.animIdleTimer = -1;
+        }
+
+        if (this.jumpState == JumpState.Prepare)
+        {
+            this.rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            this.jumpState = JumpState.Jumping;
         }
     }
 
@@ -60,8 +83,9 @@ public class PlayerController : MonoBehaviour
         return stateInfo.fullPathHash == animSleepHash;
     }
 
-    private bool CanJump()
+    private void OnCollisionEnter2D(Collision2D coll)
     {
-        return true;
+        if (coll.gameObject.tag == Const.Tags.Platform)
+            this.jumpState = JumpState.Grounded;
     }
 }

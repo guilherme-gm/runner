@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class Const
+internal static class Const
 {
-    public static class Tags
+    internal static class Tags
     {
-        public const string Player = "Player";
+        internal const string Player = "Player";
+        internal const string Platform = "Platform";
     }
 
-    public static class Player
+    internal static class Player
     {
-        public const string animJump = "Jump";
-        public const string animSpeed = "Speed";
-        public const string animIsSleeping = "IsSleeping";
+        internal const string animJump = "Jump";
+        internal const string animSpeed = "Speed";
+        internal const string animIsSleeping = "IsSleeping";
 
     }
 }
